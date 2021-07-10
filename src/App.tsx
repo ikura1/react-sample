@@ -1,5 +1,6 @@
 import React from "react"
 import Backdrop from "@material-ui/core/Backdrop"
+import Alert from "@material-ui/lab/Alert"
 import CircularProgress from "@material-ui/core/CircularProgress"
 import IconButton from "@material-ui/core/IconButton"
 import NfcIcon from "@material-ui/icons/Nfc"
@@ -27,6 +28,12 @@ function App() {
   }
   return (
     <div className="App">
+      <Alert
+        severity="error"
+        style={{ display: !("NDEFReader" in window) ? "flex" : "none" }}
+      >
+        WebNFC is not Supported
+      </Alert>
       <header className="App-header">
         {/* Clicked NFC Reader */}
         <IconButton
