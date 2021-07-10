@@ -1,39 +1,54 @@
-import React from 'react';
-import { IconButton, CircularProgress } from '@material-ui/core';
-import NfcIcon from '@material-ui/icons/Nfc';
-import './App.css';
+import React from "react"
+import Backdrop from "@material-ui/core/Backdrop"
+import CircularProgress from "@material-ui/core/CircularProgress"
+import IconButton from "@material-ui/core/IconButton"
+import NfcIcon from "@material-ui/icons/Nfc"
+import { makeStyles, createStyles, Theme } from "@material-ui/core/styles"
 
-interface AppState {
-  reading: boolean;
+import "./App.css"
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    backdrop: {
+      zIndex: theme.zIndex.drawer + 1,
+      color: "#fff",
+    },
+  })
+)
+function App() {
+  const classes = useStyles()
+  const [open, setOpen] = React.useState(false)
+  const handleClose = () => {
+    setOpen(false)
+  }
+
+  const handleToggle = () => {
+    setOpen(!open)
+  }
+  return (
+    <div className="App">
+      <header className="App-header">
+        {/* Clicked NFC Reader */}
+        <IconButton
+          style={{
+            backgroundColor: "#4c5361",
+          }}
+          onClick={handleToggle}
+        >
+          <NfcIcon style={{ color: "white", fontSize: 200 }} />
+        </IconButton>
+        {/* Loading Popup (Replace or (hide and show))*/}
+        <Backdrop
+          className={classes.backdrop}
+          open={open}
+          onClick={handleClose}
+        >
+          <CircularProgress size={100} color="inherit" />
+        </Backdrop>
+        {/* Loaded Result Popup */}
+      </header>
+    </div>
+  )
 }
 
-class App extends React.Component<{}, AppState> {
-  constructor(props: any) {
-    super(props);
-    this.state = {reading: false};
-  }
-
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <IconButton style={{ display: !this.state.reading ? "block": "none", backgroundColor: "#4c5361" }} onClick={() => this.readNfc() }>
-            {/* Clicked NFC Reader */}
-            {/* Loading Popup (Replace or (hide and show))*/}
-            {/* Loaded Result Popup */}
-            <NfcIcon style={{ color: "white", fontSize: 200}}/>
-          </IconButton>
-          <CircularProgress size={200} style={{ display: this.state.reading ? "block" : "none" }}/>
-          {/* NFC Result Status */}
-        </header>
-      </div>
-    );
-  }
-
-  async readNfc() {
-    this.setState({reading: true});
-  }
-}
-
-
-export default App;
+export default App
